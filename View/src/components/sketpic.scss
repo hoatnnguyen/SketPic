@@ -1,0 +1,85 @@
+.container {
+    background-image: linear-gradient(44deg, #1B0068 40%, #6D3CEA 105%);
+    color: white;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.content {
+    max-width: 560px;
+}
+
+.logoContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.halfCircle.left {
+    width: 80px;
+    height: 40px;
+    background-color: white;
+    border-radius: 50px 50px 0 0;
+    animation: halfCircle-left 2s;
+    animation-fill-mode: forwards;
+}
+
+.halfCircle.right {
+    width: 80px;
+    height: 40px;
+    background-color: blue;
+    border-radius: 0 0 50px 50px; 
+    animation: logo-right 2s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes halfCircle-left {
+    0% {transform-origin: bottom left;}
+    25% { transform: rotate(-45deg); transform-origin: bottom left;}
+    50% { transform: translateY(-30%) rotate(-45deg); transform-origin: bottom left;}
+    100% {transform: translateY(-75%) translateX(10%) rotate(-45deg); transform-origin: bottom left;}
+}
+
+@keyframes logo-right {
+    0% {transform-origin: top left;}
+    25% { transform: rotate(-45deg); transform-origin: top left;}
+    50% { transform: translateY(30%) rotate(-45deg); transform-origin: top left;}
+    100% {transform: translateY(75%) translateX(-10%) rotate(-45deg); transform-origin: bottom left;}
+}
+
+.ketpic {
+    font-family: "Madimi One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 5rem;
+    margin-top: -40px;
+    margin-left: -20px;
+    animation: ketpic 4s forwards;
+}
+
+@keyframes ketpic {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    99% {
+        opacity: 0.9;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+p {
+    margin: 80px 40px 0px 40px;
+    text-align: center;
+    line-height: 26px;
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 18px;
+}
