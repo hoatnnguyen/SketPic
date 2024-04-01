@@ -1,4 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .uploadContainer {
     flex: 1;
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center the children horizontally */
+    align-items: center; /* Center the children vertically */
+    height: 100vh;
 }
 
