@@ -13,7 +13,7 @@ const Sketpic: FC = () => {
           </div>
           <h1 className="ketpic">KETPIC</h1>
         </div>
-        <p>Unlock Creativity with Effortless Image Transformation. Convert Your Images to different Styles Instantly. Simply drag & drop a file in the window on the right.</p>
+        <p className="mt-8">Unlock Creativity with Effortless Image Transformation. Convert Your Images to different Styles Instantly. Simply drag & drop a file in the window on the right.</p>
       </div>
     </div>
   );
