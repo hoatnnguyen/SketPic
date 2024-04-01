@@ -1,75 +1,38 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC } from 'react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import "./upload.scss";
+import DragNDrop from './DragNDrop';
+import DropDownMenu from './DropDownMenu';
 
 const Upload: FC = () => {
-  const [file, setFile] = useState<string | undefined>(undefined);
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.currentTarget.classList.add('border-indigo-600');
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [selectConverter, setSelectConverter] = useState<string>("");
+  const converterOptions = () => {
+    return ["Sketch", "Anime"];
   };
 
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    // Remove visual feedback for drag leave
-    e.currentTarget.classList.remove('border-indigo-600');
+  const handleFileUpload = (file: File | null) => {
+    setUploadedFile(file); // Receive the file from the child component
   };
+  console.log(uploadedFile);
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    // Remove visual feedback for drag drop
-    e.currentTarget.classList.remove('border-indigo-600');
-    const droppedFile = e.dataTransfer.files[0];
-    handleFileSelect(droppedFile);
+  const converterSelection = (converter: string): void => {
+    setSelectConverter(converter);
   };
-
-  const handleFileSelect = (selectedFile: File) => {
-    // Handle file selection here, e.g., display preview
-    console.log(selectedFile);
-    const reader = new FileReader();
-    reader.readAsDataURL(selectedFile);
-    reader.onload = () => {
-      setFile(reader.result as string);
-    };
-  };
-
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      handleFileSelect(e.target.files[0]);
-    }
-  };
+  console.log(selectConverter);
 
   return (
     <div className="uploadContainer flex flex-col">
-      <div className="w-[470px] relative border-2 shadow-2xl border-gray-300 border-dashed rounded-lg p-6 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600" id="dropzone"
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-      >
-        <input type="file" className="absolute inset-0 w-full h-full opacity-0 z-50" onChange={handleInputChange}/>
-        <div className="text-center flex flex-col items-center justify-center pt-5 pb-6">
-            <svg className="w-20 h-20 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-            </svg>
-
-            <h3 className="mt-2 text-sm font-medium text-gray-900">
-                <label htmlFor="file-upload" className="relative cursor-pointer">
-                    <span>Drag and drop</span>
-                    <span className="text-indigo-600"> or browse </span>
-                    <span>to upload</span>
-                    <input id="file-upload" name="file-upload" type="file" className="sr-only" />
-                </label>
-            </h3>
-            <p className="mt-1 text-xs text-gray-500">
-                PNG, JPG, JPEG up to 3MB
-            </p>
-        </div>
-
-        <img src={file} className="mt-4 mx-auto max-h-40" id="preview" /> 
+      <DragNDrop onFileUpload={handleFileUpload} />
+      <div className="my-8">
+        <DropDownMenu converterSelection={converterSelection} converterOptions={converterOptions()}/>
       </div>
+      <button
+        type="button"
+        className="inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(220,76,100,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)]">
+        Upload
+      </button>
     </div>
   );
 };
