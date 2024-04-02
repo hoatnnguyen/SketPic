@@ -6,7 +6,6 @@ import "./upload.scss";
 import DragNDrop from './DragNDrop';
 import DropDownMenu from './DropDownMenu';
 import axiosInstance from '../axiosInstance';
-import tempImg from "../../../uploads/tempImg.jpeg";
 
 const Upload: FC = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -52,12 +51,6 @@ const Upload: FC = () => {
       console.error('Error: ', err);
     }
   }
-
-  console.log("tempImg: ", tempImg);
-
-  useEffect(() => {
-    console.log('imageUrl: ', imageUrl);
-  }, [imageUrl]);
 
   return (
     <div className="uploadContainer flex flex-col">
