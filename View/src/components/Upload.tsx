@@ -1,13 +1,18 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC } from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "./upload.scss";
 import DragNDrop from './DragNDrop';
 import DropDownMenu from './DropDownMenu';
+import axiosInstance from '../axiosInstance';
+import tempImg from "../../../uploads/tempImg.jpeg";
 
 const Upload: FC = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [selectConverter, setSelectConverter] = useState<string>("");
+  const [imageUrl, setImageUrl] = useState<string>("");
+
   const converterOptions = () => {
     return ["Sketch", "Anime"];
   };
@@ -22,6 +27,38 @@ const Upload: FC = () => {
   };
   console.log(selectConverter);
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (!uploadedFile || !selectConverter) {
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', uploadedFile);
+      formData.append('converter', selectConverter);
+      console.log('uploaded file: ', uploadedFile);
+      console.log('converter: ', selectConverter);
+      console.log('formData: ', formData.get('file'));
+
+      const response = await axiosInstance.post('/upload/', formData, {
+        responseType: 'blob'
+      });
+
+      // Convert the received blob into a data URL
+      const imageUrl = URL.createObjectURL(response.data);
+      setImageUrl(imageUrl);
+    } catch (err) {
+      console.error('Error: ', err);
+    }
+  }
+
+  console.log("tempImg: ", tempImg);
+
+  useEffect(() => {
+    console.log('imageUrl: ', imageUrl);
+  }, [imageUrl]);
+
   return (
     <div className="uploadContainer flex flex-col">
       <DragNDrop onFileUpload={handleFileUpload} />
@@ -30,9 +67,19 @@ const Upload: FC = () => {
       </div>
       <button
         type="button"
-        className="inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(220,76,100,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)]">
+        className="inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(220,76,100,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)]"
+        onClick={handleSubmit}
+        >
         Upload
       </button>
+      {
+        imageUrl && (
+          <div className="mt-8">
+            <h3>Processed Image:</h3>
+            <img id="uploadedImage" src={imageUrl} alt="Uploaded" onError={(e) => console.error("Error loading image:", e)}/>
+          </div>
+        )
+      }
     </div>
   );
 };
