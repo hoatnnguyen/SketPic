@@ -318,7 +318,7 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-./statics/input/*
-./statics/output/*
+statics/input/*
+statics/output/*
 
 .DS_Store
