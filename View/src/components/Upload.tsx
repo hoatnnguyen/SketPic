@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC } from 'react';
-import { useState} from 'react';
+import { useState } from 'react';
+
 import "./upload.scss";
 import DragNDrop from './DragNDrop';
 import DropDownMenu from './DropDownMenu';
