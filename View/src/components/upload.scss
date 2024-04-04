@@ -10,3 +10,14 @@
     height: 100vh;
 }
 
+.processedImageContainer {
+  max-height: 50vh; // Adjust as needed
+  overflow: hidden;
+}
+
+.processedImage {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+}
+
