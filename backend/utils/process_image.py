@@ -1,9 +1,10 @@
 from PIL import Image
 import io
-import sketch
+from utils.sketch import PencilSketch
 import requests
 import numpy as np
 import cv2
+import os
 
 def process_image(image_bytes):
     
@@ -15,21 +16,25 @@ def process_image(image_bytes):
     img.save(output, format='JPEG')
     img.show()
 
-
-
 def sketch_image(image_bytes):
     img = np.asarray(bytearray(image_bytes))
     img = cv2.imdecode(img, 1)
-    sketched = sketch.PencilSketch()
+    sketched = PencilSketch()
     img = sketched(img)
 
     _,result = cv2.imencode('.jpg',img)
-    result = result.tobytes()
+    result_bytes = result.tobytes()
 
-    return result
+    # Save the image to a file
+    output_dir = "../statics/output"
+    output_file = os.path.join(output_dir, "output.jpeg")
 
-#test picture
-# url = "https://images.pexels.com/photos/236047/pexels-photo-236047.jpeg"
-# img_bytes = requests.get(url).content
-# test = sketch_image(img_bytes)
-# process_image(test)
+    # Create the output directory if it doesn't exist
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    # Write the image bytes to the output file
+    with open(output_file, "wb") as f:
+        f.write(result_bytes)
+
+    return result_bytes

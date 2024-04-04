@@ -33,7 +33,11 @@ class PencilSketch:
         Returns:
             image: (np.ndarray) - dodged image
         """
-        result = back*255.0 / (255.0-front) 
+        # result = back*255.0 / (255.0-front) 
+        denominator = 255.0 - front
+        # Avoid division by zero
+        denominator[denominator == 0] = np.finfo(float).eps
+        result = back * 255.0 / denominator
         result[result>255] = 255
         result[back==255] = 255
         return result.astype('uint8')

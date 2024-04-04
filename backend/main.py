@@ -5,6 +5,7 @@ from PIL import Image
 import numpy as np
 import io
 from utils.anime_converter import convert
+from utils.process_image import process_image, sketch_image
 
 app = FastAPI()
 
@@ -31,10 +32,11 @@ async def upload_file(file: UploadFile = File(...), converter: str = Form(...)):
 
         if converter == "Anime":
             convert("../statics/input/input.jpeg")
-            img_path = "../statics/output/output.jpeg"
         else:
-            # Sketch converter should be here
-            img_path = "../statics/input/input.jpeg"
+            sketch_image(contents)
+            print(f"done converting to sketch")
+        
+        img_path = "../statics/output/output.jpeg"
         
         # Open the image using PIL
         img = Image.open(img_path)
