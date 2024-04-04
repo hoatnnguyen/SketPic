@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC } from 'react';
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 import "./upload.scss";
 import DragNDrop from './DragNDrop';
 import DropDownMenu from './DropDownMenu';
 import axiosInstance from '../axiosInstance';
-import tempImg from "../../../uploads/tempImg.jpeg";
 
 const Upload: FC = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -53,12 +52,6 @@ const Upload: FC = () => {
     }
   }
 
-  console.log("tempImg: ", tempImg);
-
-  useEffect(() => {
-    console.log('imageUrl: ', imageUrl);
-  }, [imageUrl]);
-
   return (
     <div className="uploadContainer flex flex-col">
       <DragNDrop onFileUpload={handleFileUpload} />
@@ -74,9 +67,9 @@ const Upload: FC = () => {
       </button>
       {
         imageUrl && (
-          <div className="mt-8">
+          <div className="mt-8 processedImageContainer">
             <h3>Processed Image:</h3>
-            <img id="uploadedImage" src={imageUrl} alt="Uploaded" onError={(e) => console.error("Error loading image:", e)}/>
+            <img id="uploadedImage" src={imageUrl} className="processedImage" alt="Uploaded" onError={(e) => console.error("Error loading image:", e)}/>
           </div>
         )
       }
