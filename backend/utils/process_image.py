@@ -14,7 +14,6 @@ def process_image(image_bytes):
     output = io.BytesIO()
     img.save(output, format='JPEG')
     img.show()
-    return output.getvalue()
 
 
 
@@ -30,7 +29,7 @@ def sketch_image(image_bytes):
     return result
 
 #test picture
-url = "https://images.pexels.com/photos/236047/pexels-photo-236047.jpeg"
-img_bytes = requests.get(url).content
-test = sketch_image(img_bytes)
-process_image(test)
+# url = "https://images.pexels.com/photos/236047/pexels-photo-236047.jpeg"
+# img_bytes = requests.get(url).content
+# test = sketch_image(img_bytes)
+# process_image(test)
