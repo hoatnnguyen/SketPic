@@ -38,7 +38,7 @@ def save_images(images, image_path, size):
     print("finished saving processed image")
 
 def convert(input_imgs_path, onnx="./model/AnimeGANv3.onnx", device="cpu"):
-    result_dir = "../statics/output"
+    result_dir = "../statics/"
     test_file = input_imgs_path
     print(f"Processing image: {test_file}")
 

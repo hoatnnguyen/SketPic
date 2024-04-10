@@ -26,7 +26,7 @@ def sketch_image(image_bytes):
     result_bytes = result.tobytes()
 
     # Save the image to a file
-    output_dir = "../statics/output"
+    output_dir = "../statics/"
     output_file = os.path.join(output_dir, "output.jpeg")
 
     # Create the output directory if it doesn't exist
