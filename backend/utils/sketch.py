@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 import typing
-from PIL import Image
 class PencilSketch:
     """Apply pencil sketch effect to an image
     """
@@ -63,8 +62,5 @@ class PencilSketch:
         blur_img = cv2.GaussianBlur(inverted_img, ksize=(0, 0), sigmaX=5)
         sketched = PencilSketch() 
         final_img = sketched.dodge(blur_img, grayscale)
-        #sharpened_image = sketched.sharpen(final_img)
-        return final_img
-        #cv2.imwrite('picture2_sketch.jpg',final_img)
-        #cv2.imshow('img', sharpened_image)
-        #cv2.waitKey(0)
+        sharpened_image = sketched.sharpen(final_img)
+        return sharpened_image
