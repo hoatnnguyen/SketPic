@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC } from 'react';
 import { useState } from 'react';
+import { MutatingDots } from 'react-loader-spinner';
 
 import "./upload.scss";
 import DragNDrop from './DragNDrop';
@@ -12,6 +13,7 @@ const Upload: FC = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [selectConverter, setSelectConverter] = useState<string>("");
   const [imageUrl, setImageUrl] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const converterOptions = () => {
     return ["Sketch", "Anime"];
@@ -34,6 +36,8 @@ const Upload: FC = () => {
         return;
       }
 
+      setLoading(true)
+      setImageUrl("")
       const formData = new FormData();
       formData.append('file', uploadedFile);
       formData.append('converter', selectConverter);
@@ -48,6 +52,7 @@ const Upload: FC = () => {
       // Convert the received blob into a data URL
       const imageUrl = URL.createObjectURL(response.data);
       setImageUrl(imageUrl);
+      setLoading(false);
     } catch (err) {
       console.error('Error: ', err);
     }
@@ -66,6 +71,19 @@ const Upload: FC = () => {
         >
         Upload
       </button>
+      {loading && (
+        <MutatingDots
+          visible={true}
+          height="100"
+          width="100"
+          color="#4fa94d"
+          secondaryColor="#4fa94d"
+          radius="12.5"
+          ariaLabel="mutating-dots-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
+      )}
       {
         imageUrl && (
           <div className="mt-8 processedImageContainer">
