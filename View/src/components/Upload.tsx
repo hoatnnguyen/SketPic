@@ -14,6 +14,7 @@ const Upload: FC = () => {
   const [selectConverter, setSelectConverter] = useState<string>("");
   const [imageUrl, setImageUrl] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const converterOptions = () => {
     return ["Sketch", "Anime"];
@@ -30,6 +31,7 @@ const Upload: FC = () => {
   console.log(selectConverter);
 
   const handleSubmit = async (e: React.FormEvent) => {
+    setErrorMessage("");
     e.preventDefault();
     try {
       if (!uploadedFile || !selectConverter) {
@@ -54,6 +56,8 @@ const Upload: FC = () => {
       setImageUrl(imageUrl);
       setLoading(false);
     } catch (err) {
+      setErrorMessage("Failed to process file");
+      setLoading(false);
       console.error('Error: ', err);
     }
   }
@@ -87,11 +91,11 @@ const Upload: FC = () => {
       {
         imageUrl && (
           <div className="mt-8 processedImageContainer">
-            <h3>Processed Image:</h3>
             <img id="uploadedImage" src={imageUrl} className="processedImage" alt="Uploaded" onError={(e) => console.error("Error loading image:", e)}/>
           </div>
         )
       }
+      {errorMessage && <div>{errorMessage}</div>}
     </div>
   );
 };

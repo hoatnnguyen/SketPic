@@ -1,6 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi import HTTPException
 import io
 from utils.anime_converter import convert_to_anime
 from utils.process_image import sketch_image
@@ -36,4 +37,4 @@ async def upload_file(file: UploadFile = File(...), converter: str = Form(...)):
         return StreamingResponse(img_bytes, media_type="image/jpeg") 
 
     except Exception as e:
-        return JSONResponse(content={"message": "Failed to process file"}, status_code=400)
+        raise HTTPException(status_code=400, detail="Failed to process image")
