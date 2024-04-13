@@ -1,10 +1,11 @@
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
-from PIL import Image
-import numpy as np
+from fastapi import HTTPException
 import io
-from utils.anime_converter import convert
+from utils.anime_converter import convert_to_anime
+from utils.process_image import sketch_image
+import cv2
 
 app = FastAPI()
 
@@ -25,24 +26,15 @@ async def upload_file(file: UploadFile = File(...), converter: str = Form(...)):
     try:
         contents = await file.read()
 
-        input_path = "../statics/input/input.jpeg"
-        with open(input_path, "wb") as f:
-            f.write(contents)
-
         if converter == "Anime":
-            convert("../statics/input/input.jpeg")
-            img_path = "../statics/output/output.jpeg"
+            img = convert_to_anime(contents)
+            _, img_encoded = cv2.imencode('.jpg', img)
+            img_bytes = io.BytesIO(img_encoded.tobytes())
         else:
-            # Sketch converter should be here
-            img_path = "../statics/input/input.jpeg"
-        
-        # Open the image using PIL
-        img = Image.open(img_path)
+            img_bytes = sketch_image(contents)
+            print(f"done converting to sketch")
 
-        # Convert the image to bytes
-        img_bytes = io.BytesIO()
-        img.save(img_bytes, format='JPEG')
-        img_bytes.seek(0)
         return StreamingResponse(img_bytes, media_type="image/jpeg") 
+
     except Exception as e:
-        return JSONResponse(content={"message": "Failed to process file"}, status_code=400)
+        raise HTTPException(status_code=400, detail="Failed to process image")
