@@ -17,7 +17,7 @@ This is a website application that aims to provide users with the ability to tra
 
 ### Prerequisites
 
-Docker is installed. You can download & install Docker Desktop from [here](https://www.docker.com/products/docker-desktop/).
+Make sure Docker is installed. You can download & install Docker Desktop from [here](https://www.docker.com/products/docker-desktop/).
 
 ### 🛠️ Installation
 
@@ -40,3 +40,7 @@ docker-compose up --build
 ```
 
 4. Once the containers are built and running, you can access the application at http://localhost:3000
+
+## 🎮 Usage
+
+You can use provided images in [Example folder](https://github.com/hoatnnguyen/SketPic/tree/main/Example) to try the application.
